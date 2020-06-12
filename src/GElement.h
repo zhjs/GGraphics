@@ -1,8 +1,9 @@
 #ifndef __GELEMENT_H__
 #define __GELEMENT_H__
 
-#include <memory>
 #include "../../GSDL/src/GSDL.h"
+#include <memory>
+
 
 using namespace GSDL;
 
@@ -95,7 +96,7 @@ namespace GGraphis
 
 	protected:
 
-		virtual bool Update();
+		virtual bool Update() override;
 	};
 
 	class GLine : public GElement
@@ -105,11 +106,11 @@ namespace GGraphis
 		GLine(const GLine& Line_) : GElement(Line_) {}
 		virtual ~GLine() {}
 
-		virtual void GetSize(float& nWidth_, float& nHeight_) const;
-		virtual void SetSize(float nWidth_, float nHeight_);
+		virtual void GetSize(float& nWidth_, float& nHeight_) const override;
+		virtual void SetSize(float nWidth_, float nHeight_) override;
 
 	protected:
-		virtual bool Update();
+		virtual bool Update() override;
 
 	};
 
@@ -120,7 +121,7 @@ namespace GGraphis
 		virtual ~GPicture() {}
 
 	protected:
-		virtual bool Update();
+		virtual bool Update() override;
 	};
 
 

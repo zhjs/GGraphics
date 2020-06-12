@@ -98,7 +98,7 @@ namespace GGraphis
 
 		if (!m_pSharedTexture)
 		{
-			SDL_assert(false);
+			SDL_assert(SDL_FALSE);
 			PrintError("Texture为空，无法执行anti-aliasing", "");
 			return;
 		}

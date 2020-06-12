@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Dependence/include/PrintInformation.h
+/Dependence/include/GSDL.h
+/Dependence/include/GLogsCommon.h
+/Dependence/include/GLogs.h
