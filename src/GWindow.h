@@ -8,7 +8,6 @@
 #include "../../GSDL/src/GSDL.h"
 #include "GElement.h"
 
-using namespace GSDL;
 
 namespace GGraphis
 {

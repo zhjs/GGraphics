@@ -5,10 +5,22 @@
 #include <memory>
 
 
-using namespace GSDL;
-
 namespace GGraphis
 {
+	using GSDL::TextureSharedPtr;
+	using GSDL::WindowSharedPtr;
+	using GSDL::RendererSharedPtr;
+
+	class GElement;
+
+	// 一些别名的定义
+	using ElementPtr = std::shared_ptr<GElement>;
+
+	// 工厂函数，输入类型名称，从而创建不同的元素
+	ElementPtr CreateElement(const std::string& strElemType_);
+
+
+
 
 
 	class GElement
@@ -25,9 +37,9 @@ namespace GGraphis
 			SDL_memset(&m_Shape, 0, sizeof(m_Shape));
 		}
 
-		GElement(const GElement& Element_);
+		GElement(const GElement& Element_) = default;
 
-		virtual ~GElement() {}
+		virtual ~GElement() = default;
 
 
 		virtual void GetSize(float& nWidth_, float& nHeight_) const;
@@ -57,7 +69,7 @@ namespace GGraphis
 	protected:
 
 		// GElement作为纯虚类，子类必须实现Update()函数，且Update函数不开放给用户
-		virtual bool Update() { return false; }
+		virtual bool Update() = 0;
 
 		bool RenderCopy();
 		bool SetAlpha(Uint8 nAlpha_);
@@ -90,9 +102,9 @@ namespace GGraphis
 	class GRect : public GElement
 	{
 	public:
-		GRect() : GElement() {}
+		GRect() = default;
 		GRect(const GRect& Rect_) : GElement(Rect_) {}
-		virtual ~GRect() {}
+		virtual ~GRect() = default;
 
 	protected:
 
@@ -102,9 +114,9 @@ namespace GGraphis
 	class GLine : public GElement
 	{
 	public:
-		GLine() :GElement() {}
+		GLine() = default;
 		GLine(const GLine& Line_) : GElement(Line_) {}
-		virtual ~GLine() {}
+		virtual ~GLine() = default;
 
 		virtual void GetSize(float& nWidth_, float& nHeight_) const override;
 		virtual void SetSize(float nWidth_, float nHeight_) override;
@@ -116,23 +128,16 @@ namespace GGraphis
 
 	class GPicture : public GElement
 	{
-		GPicture() : GElement() {}
+	public:
+		GPicture() = default;
 		GPicture(const GPicture& Picture_) : GElement(Picture_) {}
-		virtual ~GPicture() {}
+		virtual ~GPicture() = default;
 
 	protected:
-		virtual bool Update() override;
+		virtual bool Update() override { return false; }
 	};
 
-
-
-
-
-
-
-
-	// 一些别名的定义
-	using ElementPtr = std::shared_ptr<GElement>;
+	
 }
 
 

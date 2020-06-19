@@ -1,27 +1,56 @@
 #include "GLogs.h"
 #include "GElement.h"
+#include <algorithm>
+#include <cctype>
+#include <iterator>
 
 using namespace GLogs;
 
 namespace GGraphis
 {
 
+	ElementPtr CreateElement(const std::string& strElemType_)
+	{
+		std::string _strUpperString;
+		std::transform(strElemType_.begin(), strElemType_.end(), std::back_inserter(_strUpperString), std::toupper);
+		if (_strUpperString == "RECT")
+		{
+			return ElementPtr(new GRect);
+		}
+		else if (_strUpperString == "LINE")
+		{
+			return ElementPtr(new GLine);
+		}
+		else if (_strUpperString == "PICTURE")
+		{
+			return ElementPtr(new GPicture);
+		}
+		else
+		{
+			PrintError("创建元素错误", "没有此类型元素的定义，无法创建");
+			return nullptr;
+		}
+	}
+
+
 
 	/************ GElement ***************/
 
-	GElement::GElement(const GElement& Element_)
-	{
-		this->m_pSharedTexture = Element_.m_pSharedTexture;
-		this->m_pSharedRenderer = Element_.m_pSharedRenderer;
-		this->m_pSharedWindow = Element_.m_pSharedWindow;
-		this->m_Shape = Element_.m_Shape;
-		this->m_bShow = Element_.m_bShow;
-		this->m_Colour = Element_.m_Colour;
-		this->m_nAngle = Element_.m_nAngle;
-		this->m_bReDraw = Element_.m_bReDraw;
-		this->m_nAlpha = Element_.m_nAlpha;
-		this->m_nAntiAliasing = Element_.m_nAntiAliasing;
-	}
+/*
+// 	GElement::GElement(const GElement& Element_)
+// 	{
+// 		this->m_pSharedTexture = Element_.m_pSharedTexture;
+// 		this->m_pSharedRenderer = Element_.m_pSharedRenderer;
+// 		this->m_pSharedWindow = Element_.m_pSharedWindow;
+// 		this->m_Shape = Element_.m_Shape;
+// 		this->m_bShow = Element_.m_bShow;
+// 		this->m_Colour = Element_.m_Colour;
+// 		this->m_nAngle = Element_.m_nAngle;
+// 		this->m_bReDraw = Element_.m_bReDraw;
+// 		this->m_nAlpha = Element_.m_nAlpha;
+// 		this->m_nAntiAliasing = Element_.m_nAntiAliasing;
+// 	}
+*/
 
 	void GElement::GetSize(float& nWidth_, float& nHeight_) const
 	{
@@ -98,7 +127,7 @@ namespace GGraphis
 
 		if (!m_pSharedTexture)
 		{
-			SDL_assert(SDL_FALSE);
+			SDL_assert(false);
 			PrintError("Texture为空，无法执行anti-aliasing", "");
 			return;
 		}
@@ -230,7 +259,7 @@ namespace GGraphis
 		if (0 != SDL_SetRenderDrawColor(GET_RAW_POINT(m_pSharedRenderer), m_Colour.r, m_Colour.g, m_Colour.b, m_Colour.a))
 		{
 			PrintError("设置元素背景色出错", SDL_GetError());
-			return SDL_FALSE;
+			return false;
 		}
 
 		const auto& _StartP = m_Shape.m_Points.Start;
@@ -238,10 +267,10 @@ namespace GGraphis
 		if (0 != SDL_RenderDrawLineF(GET_RAW_POINT(m_pSharedRenderer), _StartP.x, _StartP.y, _EndP.x, _EndP.y))
 		{
 			PrintError("使用Renderer绘制线条出错", SDL_GetError());
-			return SDL_FALSE;
+			return false;
 		}
 
-		return SDL_TRUE;
+		return true;
 	}
 
 	// 暂时是有问题的，后面再仔细设计

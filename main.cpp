@@ -22,7 +22,7 @@ void CreateCircleData(const SDL_FPoint& CenterPoint_, float nRadius_, int nDivid
 
 struct pp
 {
-	GElement* pe;
+	ElementPtr pe;
 	SDL_Event* pEvent;
 };
 
@@ -65,23 +65,23 @@ int main(int argc, char* argv[])
 	_win.SetBackgroundColour({0x0, 0x8E, 0x20, 0xFF });
 
 
-	GElement* _pelem = new GRect;
+	auto _pelem = CreateElement("Rect");
 	_pelem->SetSize(150, 150);
 	_pelem->SetPosition(150, 150);
 	_pelem->SetColour({ 0xFF, 0xCE, 0x0, 0xFF });
 	_pelem->SetAngle(0);
 	_pelem->SetOpacity(255);
-	_win.RegisterElement(std::shared_ptr<GElement>(_pelem));
+	_win.RegisterElement(_pelem);
 
 	pp _pe;
 	_pe.pe = _pelem;
 	_pe.pEvent = _win.GetEvent();
 
-	_pelem = new GLine;
+	_pelem = CreateElement("Line");
 	_pelem->SetColour({ 0xFF, 0xCE, 0x0, 0xFF });
 	_pelem->SetPosition(100, 300);
 	_pelem->SetSize(10, 300);
-	_win.RegisterElement(std::shared_ptr<GElement>(_pelem));
+	_win.RegisterElement(_pelem);
 
 	_win.Run(fs, &_pe);
 
